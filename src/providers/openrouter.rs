@@ -563,8 +563,11 @@ impl Provider for OpenRouterProvider {
         }
 
         let resp_body = Self::read_response_body("OpenRouter", response).await?;
-        let native_response =
-            Self::parse_response_body::<NativeChatResponse>("OpenRouter", &resp_body, "native chat")?;
+        let native_response = Self::parse_response_body::<NativeChatResponse>(
+            "OpenRouter",
+            &resp_body,
+            "native chat",
+        )?;
         let usage = native_response.usage.map(|u| TokenUsage {
             input_tokens: u.prompt_tokens,
             output_tokens: u.completion_tokens,
@@ -655,8 +658,11 @@ impl Provider for OpenRouterProvider {
         }
 
         let resp_body = Self::read_response_body("OpenRouter", response).await?;
-        let native_response =
-            Self::parse_response_body::<NativeChatResponse>("OpenRouter", &resp_body, "native chat")?;
+        let native_response = Self::parse_response_body::<NativeChatResponse>(
+            "OpenRouter",
+            &resp_body,
+            "native chat",
+        )?;
         let usage = native_response.usage.map(|u| TokenUsage {
             input_tokens: u.prompt_tokens,
             output_tokens: u.completion_tokens,
@@ -1268,8 +1274,7 @@ mod tests {
     #[test]
     fn with_extra_body_sets_value() {
         let extra = serde_json::json!({"provider": {"only": ["Anthropic"]}});
-        let provider =
-            OpenRouterProvider::new(Some("key"), None).with_extra_body(extra.clone());
+        let provider = OpenRouterProvider::new(Some("key"), None).with_extra_body(extra.clone());
         assert_eq!(provider.extra_body, Some(extra));
     }
 
@@ -1290,8 +1295,8 @@ mod tests {
 
     #[test]
     fn extra_body_empty_object_produces_unchanged_request() {
-        let provider = OpenRouterProvider::new(Some("key"), None)
-            .with_extra_body(serde_json::json!({}));
+        let provider =
+            OpenRouterProvider::new(Some("key"), None).with_extra_body(serde_json::json!({}));
         let request = ChatRequest {
             model: "test-model".into(),
             messages: vec![],
